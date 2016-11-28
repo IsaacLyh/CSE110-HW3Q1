@@ -30,19 +30,23 @@ class OrderFascade {
         FulfillmentService fullfill = new FulfillmentService(sd);
         CustomerRecordService record = new CustomerRecordService();
         
+       //Check if the product is available in the inventory
         if(inventory.sellFromInventory(Product)){
             System.out.println("Product Available");
+            //Check if the order can be fulfilled with these current settings
             if(fullfill.fulfill (Product, ID, serviceClass,time)){
+                //The order can be fulfilled, so go ahead and record it
                 record.recordOrder(time, serviceClass, ID,Product);
             }
             else{
+                //The order cannot be fulfilled, so do not record it
                 System.out.println("Unable to Fullfill at Time Requested");
             }
         }
         else{
+            //Product is not available in the inventory
             System.out.println("Sold Out");
         }
-        
     }
     
     public static void main(String[] args){
